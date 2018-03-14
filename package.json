@@ -33,7 +33,8 @@
   },
   "config": {
     "sui-mono": {
-      "access": "private"
+      "access": "private",
+      "packagesFolder": "./packages"
     },
     "validate-commit-msg": {
       "types": "@s-ui/mono/src/types"
