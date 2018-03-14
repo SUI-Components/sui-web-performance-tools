@@ -1,0 +1,57 @@
+{
+  "name": "sokutei",
+  "version": "0.0.0",
+  "description": "Extract performance metrics from your site",
+  "keywords": [
+    "schibsted",
+    "monorepo",
+    "sui"
+  ],
+  "scripts": {
+    "phoenix": "rm -Rf node_modules && npm i && sui-mono run-parallel rm -Rf node_modules && sui-mono run-parallel npm i",
+    "co": "sui-mono commit",
+    "release": "sui-mono release",
+    "release:check": "sui-mono check",
+    "lint": "sui-lint js && sui-lint sass",
+    "test": "NODE_ENV=test npm run test:client && NODE_ENV=test npm run test:server",
+    "test:ci": "npm run test:client -- --ci",
+    "test:client": "NODE_ENV=test sui-test browser -P 'packages/*/test/**/*Spec.js' -I 'packages/*/test/server/*Spec.js'",
+    "test:client:watch": "npm run test:client -- --watch",
+    "test:server": "NODE_ENV=test sui-test server -P './packages/*/test/!(browser)/*.js'",
+    "test:server:watch": "npm run test:server -- --watch",
+    "commitmsg": "validate-commit-msg",
+    "precommit": "sui-precommit run"
+  },
+  "devDependencies": {
+    "@s-ui/lint": "2",
+    "@s-ui/mono": "1",
+    "@s-ui/precommit": "2",
+    "@s-ui/test": "1",
+    "chai": "3.5.0",
+    "husky": "0.13.4",
+    "validate-commit-msg": "2.12.2"
+  },
+  "config": {
+    "sui-mono": {
+      "access": "private"
+    },
+    "validate-commit-msg": {
+      "types": "@s-ui/mono/src/types"
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/@s-ui/lint/eslintrc.js"
+    ]
+  },
+  "author": "Schibsted Spain Enablers Frontend",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SUI-Components/sokutei.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SUI-Components/sokutei/issues"
+  },
+  "homepage": "https://github.com/SUI-Components/sokutei/#readme",
+  "license": "MIT"
+}
