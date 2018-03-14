@@ -1,0 +1,19 @@
+{
+  "name": "sokutei",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chrome-har": "0.2.3",
+    "lighthouse": "2.9.1",
+    "pagexray": "2.1.0",
+    "puppeteer": "1.1.1",
+    "puppeteer-har": "1.0.2"
+  }
+}
