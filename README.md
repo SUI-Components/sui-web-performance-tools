@@ -1,4 +1,4 @@
-# sokutei
+# Web Performance Metrics
 
 Get web performance metrics effortless.
 
