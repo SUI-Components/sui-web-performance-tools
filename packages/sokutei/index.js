@@ -2,15 +2,14 @@ const { emulateNetworkConditionOnClient } = require('./helpers')
 const { checkHardLoadUrls } = require('./checkHardLoadUrls')
 const { checkJourney } = require('./checkJourney')
 
-async function getPerformanceMetrics ({ browser, checkSuite } = {}) {
+async function getWebPerformanceMetrics ({ browser, checkSuite } = {}) {
+  if (typeof checkSuite === 'undefined') {
+    return throw Error('checkSuite parameter is required')
+  }
+
   if (typeof browser === 'undefined') {
     const puppeteer = require('puppeteer')
     browser = await puppeteer.launch()
-  }
-
-  if (typeof checkSuite === 'undefined') {
-    // that's temporary, as we want that to not be used as this
-    checkSuite = require('./config')
   }
 
   const page = await browser.newPage()
@@ -33,8 +32,7 @@ async function getPerformanceMetrics ({ browser, checkSuite } = {}) {
   return results
 }
 
-getPerformanceMetrics()
-
 module.exports = {
-  getPerformanceMetrics
+  getWebPerformanceMetrics,
+  types: require('./types')
 }
