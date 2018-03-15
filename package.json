@@ -1,5 +1,6 @@
 {
   "name": "sokutei",
+  "private": true,
   "version": "0.0.0",
   "description": "Extract performance metrics from your site",
   "keywords": [
