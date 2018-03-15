@@ -9,11 +9,13 @@ const JOURNEY_ACTIONS = {
 const NETWORK_CONDITIONS = {
   GOOD_3G: {
     downloadThroughput: 1.5 * 1024 * 1024 / 8, // 1.5mbps
+    ref: 'good_3g',
     latency: 40, // 40ms
     uploadThroughput: 750 * 1024 / 8, // 750kbps
   },
   GOOD_4G: {
     downloadThroughput: 4 * 1024 * 1024 / 8, // 4mbps
+    ref: 'good_4g',
     latency: 20, // 20ms
     uploadThroughput: 3 * 1024 * 1024 / 8, // 3mbps
   },
@@ -21,29 +23,34 @@ const NETWORK_CONDITIONS = {
 
 const VIEWPORTS = {
   DESKTOP_BIG: {
+    ref: 'desktop_big',
+    height: 1080,
     width: 1920,
-    height: 1080
   },
   DESKTOP: {
+    ref: 'desktop',
+    height: 768,
     width: 1366,
-    height: 768
   },
   MOBILE: {
     hasTouch: true,
+    ref: 'mobile',
     isMobile: true,
     width: 360,
     height: 640
   },
   MOBILE_BIG: {
     hasTouch: true,
+    ref: 'mobile_big',
     isMobile: true,
     width: 375,
     height: 667
   },
   TABLET: {
-    width: 768,
+    hasTouch: true,
     height: 1024,
-    hasTouch: true
+    ref: 'tablet',
+    width: 768,
   },
 }
 
