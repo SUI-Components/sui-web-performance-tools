@@ -2,9 +2,18 @@ const { emulateNetworkConditionOnClient } = require('./helpers')
 const { checkHardLoadUrls } = require('./checkHardLoadUrls')
 const { checkJourney } = require('./checkJourney')
 
+const DEFAULT_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
+
+function handleError ({ page }) {
+  return (err) => {
+    console.error('!!Error', err)
+    page.screenshot()
+  }
+}
+
 async function getWebPerformanceMetrics ({ browser, checkSuite } = {}) {
   if (typeof checkSuite === 'undefined') {
-    return throw Error('checkSuite parameter is required')
+    throw new Error('checkSuite parameter is required')
   }
 
   if (typeof browser === 'undefined') {
@@ -13,6 +22,8 @@ async function getWebPerformanceMetrics ({ browser, checkSuite } = {}) {
   }
 
   const page = await browser.newPage()
+  await page.setCacheEnabled(false)
+  await page.setUserAgent(DEFAULT_USER_AGENT)
   // extract the info from the check config
   const { hardLoadUrls, funnelJourney, networkCondition, viewport } = checkSuite
   // set the viewport as specified on the check config
@@ -23,9 +34,8 @@ async function getWebPerformanceMetrics ({ browser, checkSuite } = {}) {
   // get the result of performing all the checks
   const results = {
     hardLoadUrls: await checkHardLoadUrls({ page, hardLoadUrls }),
-    funnelJourney: await checkJourney({ client, page, journey: funnelJourney })
+    funnelJourney: await checkJourney({ client, page, journey: funnelJourney }).catch(handleError({ page }))
   }
-  console.log(JSON.stringify(results, null, 2))
   // close browser connection
   await browser.close()
   // return the results
