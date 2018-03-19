@@ -9,10 +9,7 @@ function createTimer () {
     stop () {
       const diff = process.hrtime(startTime)
       const nanoseconds = (diff[0] * 1e9) + diff[1]
-      return {
-        raw: diff,
-        milliseconds: Math.round(nanoseconds / 1e6 * 100) / 100
-      }
+      return Math.round(nanoseconds / 1e6 * 100) / 100
     }
   }
 }
