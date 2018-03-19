@@ -1,6 +1,6 @@
 const JOURNEY_ACTIONS = {
   GO_TO: 'goto',
-  WAIT_FOR: 'waitFor',
+  WAIT_FOR: 'waitForSelector',
   FOCUS: 'focus',
   CLICK: 'click',
   TYPE: 'type'
