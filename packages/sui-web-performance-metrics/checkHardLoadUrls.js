@@ -1,5 +1,6 @@
 const { createTimer } = require('./helpers')
 const { withHarResponse } = require('./withHarResponse')
+const { checkPageSpeed } = require('./checkPageSpeed')
 
 async function getPerformanceMetrics ({ page }) {
   return page.evaluate(_ => {
@@ -29,7 +30,7 @@ function handleError (err) {
   console.log(err)
 }
 
-async function checkHardLoadUrls ({ page, hardLoadUrls }) {
+async function checkHardLoadUrls ({ googlePageSpeedApiKey, page, hardLoadUrls, viewport }) {
   console.log('· checkHardLoadUrls')
   let checkResults = []
   for (const url of hardLoadUrls) {
@@ -37,7 +38,8 @@ async function checkHardLoadUrls ({ page, hardLoadUrls }) {
     const timer = createTimer()
     const singleCheckResult = await checkUrl({ page, url }).catch(handleError)
     const timeUsed = timer.stop()
-    checkResults.push({ ...singleCheckResult, timeUsed })
+    const pageSpeedResult = await checkPageSpeed({ googlePageSpeedApiKey, url, viewport })
+    checkResults.push({ ...singleCheckResult, timeUsed, pageSpeedResult })
   }
   return checkResults
 }

@@ -4,14 +4,7 @@ const { checkJourney } = require('./checkJourney')
 
 const DEFAULT_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
 
-function handleError ({ page }) {
-  return (err) => {
-    console.error('!!Error', err)
-    page.screenshot()
-  }
-}
-
-async function getWebPerformanceMetrics ({ browser, checkSuite } = {}) {
+async function getWebPerformanceMetrics ({ browser, checkSuite, googlePageSpeedApiKey } = {}) {
   if (typeof checkSuite === 'undefined') {
     throw new Error('checkSuite parameter is required')
   }
@@ -33,8 +26,8 @@ async function getWebPerformanceMetrics ({ browser, checkSuite } = {}) {
   await emulateNetworkConditionOnClient({ client, networkCondition })
   // get the result of performing all the checks
   const results = {
-    hardLoadUrls: await checkHardLoadUrls({ page, hardLoadUrls }),
-    funnelJourney: await checkJourney({ client, page, journey: funnelJourney }).catch(handleError({ page }))
+    hardLoadUrls: await checkHardLoadUrls({ googlePageSpeedApiKey, page, hardLoadUrls, viewport }),
+    funnelJourney: await checkJourney({ client, page, journey: funnelJourney })
   }
   // close browser connection
   await browser.close()
