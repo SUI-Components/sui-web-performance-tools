@@ -8,11 +8,13 @@ async function checkJourney ({client, page, journey}) {
   let previousStep
 
   const { steps } = journey
+  console.log(`· checkJourney with ${steps.length} steps`)
 
   const harResponse = await withHarResponse(page, async () => {
     for (const step of steps) {
       let timer = createTimer()
       const [action, payload] = step
+      console.log(`·· step: ${action} - ${payload}`)
 
       if (action === JOURNEY_ACTIONS.TYPE && previousStep) {
         const [, elementWhereTyping] = previousStep
@@ -22,7 +24,8 @@ async function checkJourney ({client, page, journey}) {
       }
 
       const timeUsed = timer.stop()
-      console.log(`Done step ${action} - ${payload} in ${timeUsed.milliseconds}ms`)
+      console.log(`··· done in ${timeUsed}ms`)
+
       timers.push(timeUsed)
       previousStep = step
     }
