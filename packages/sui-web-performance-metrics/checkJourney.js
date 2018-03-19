@@ -3,6 +3,14 @@ const { withHarResponse } = require('./withHarResponse')
 
 const { JOURNEY_ACTIONS } = require('./types')
 
+function handleError ({ page }) {
+  return (err) => {
+    console.error('!!Error', err)
+    page.screenshot()
+    return {}
+  }
+}
+
 async function checkJourney ({client, page, journey}) {
   let timers = []
   let previousStep
@@ -29,7 +37,7 @@ async function checkJourney ({client, page, journey}) {
       timers.push(timeUsed)
       previousStep = step
     }
-  })
+  }).catch(handleError({ page }))
 
   return { harResponse, timers }
 }
