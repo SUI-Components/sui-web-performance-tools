@@ -5,10 +5,11 @@ async function withHarResponse (page, doActionsOnPage) {
   const harReader = new PuppeteerHar(page)
   await harReader.start()
 
-  await doActionsOnPage()
+  const dataToAggregate = await doActionsOnPage()
 
   const rawHar = await harReader.stop()
-  return pagexray.convert(rawHar)[0]
+  const harResults = pagexray.convert(rawHar)[0]
+  return { ...harResults, ...dataToAggregate }
 }
 
 module.exports = {
