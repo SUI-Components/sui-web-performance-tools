@@ -29,9 +29,10 @@ async function checkJourney ({client, page, journey}) {
 
   const harResponse = await withHarResponse(page, async () => {
     for (const step of steps) {
-      let timer = createTimer()
-      let result
       const [action, payload] = step
+      const timer = createTimer()
+      let result
+
       console.log(`·· step: ${action} - ${payload}`)
 
       if (action === JOURNEY_ACTIONS.TYPE && previousStep) {
@@ -46,10 +47,11 @@ async function checkJourney ({client, page, journey}) {
       }
 
       const timeUsed = timer.stop()
-      console.log(`··· done in ${timeUsed}ms`)
-
       timers.push(timeUsed)
+      // save previous step in case we need later if the action is typing
       previousStep = step
+
+      console.log(`··· done in ${timeUsed}ms`)
     }
   }).catch(handleErrorWithHarResponse)
 
