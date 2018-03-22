@@ -1,8 +1,17 @@
+/**
+ * Emulate a specific network condition
+ * @param {Object} params
+ * @param {Object} params.client Browser client
+ * @param {Object} params.networkCondition Network condition cofiguration
+ */
 async function emulateNetworkConditionOnClient ({ client, networkCondition = {} }) {
   await client.send('Network.enable')
   await client.send('Network.emulateNetworkConditions', { offline: false, ...networkCondition })
 }
 
+/**
+ * Create a timer with a stop method in order to detect time passed in ms
+ */
 function createTimer () {
   const startTime = process.hrtime()
   return {
@@ -14,27 +23,7 @@ function createTimer () {
   }
 }
 
-function getTimeFromPerformanceMetrics (metrics, name) {
-  return metrics.metrics.find(x => x.name === name).value * 1000
-}
-
-function extractDataFromPerformanceTiming (metrics, ...dataNames) {
-  const navigationStart = getTimeFromPerformanceMetrics(
-    metrics,
-    'NavigationStart'
-  )
-
-  const extractedData = {}
-  dataNames.forEach(name => {
-    extractedData[name] = getTimeFromPerformanceMetrics(metrics, name) - navigationStart
-  })
-
-  return extractedData
-}
-
 module.exports = {
   createTimer,
-  emulateNetworkConditionOnClient,
-  getTimeFromPerformanceMetrics,
-  extractDataFromPerformanceTiming,
+  emulateNetworkConditionOnClient
 }
