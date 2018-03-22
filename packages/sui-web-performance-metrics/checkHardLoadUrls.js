@@ -1,9 +1,20 @@
 const speedline = require('speedline')
 const { createTimer } = require('./helpers')
 const { withHarResponse } = require('./withHarResponse')
-const { checkPageSpeed } = require('./checkPageSpeed')
+const { getGooglePageSpeedResults } = require('./getGooglePageSpeedResults')
 
 const TRACE_FILE_PATH = '/tmp/trace.json'
+
+/**
+ * Get speedIndex from traceFile
+ * @param {Object} params
+ * @param {Object} params.page Page of Puppeeteer instance
+ */
+async function getSpeedIndexFromTraceFile () {
+  return speedline(TRACE_FILE_PATH, {
+    include: 'speedIndex'
+  }).catch(handleSpeedLineError)
+}
 
 /**
  * Get native performance metrics from the browser
@@ -33,7 +44,7 @@ async function getPerformanceMetrics ({ page }) {
  */
 async function checkUrl ({ page, url }) {
   const doOnPage = async () => {
-    await page.goto(url)
+    await page.goto(url).catch(_ => ({}))
     const performanceMetrics = await getPerformanceMetrics({ page })
     return { performanceMetrics }
   }
@@ -67,19 +78,23 @@ function handleSpeedLineError (err) {
  */
 async function checkHardLoadUrls ({ googlePageSpeedApiKey, page, hardLoadUrls, viewport }) {
   console.log('· checkHardLoadUrls')
+
   let checkResults = []
   for (const url of hardLoadUrls) {
     console.log(`·· checking url ${url}`)
+
     const timer = createTimer()
     await page.tracing.start({path: TRACE_FILE_PATH, screenshots: true})
     const singleCheckResult = await checkUrl({ page, url }).catch(handleErrorCheckingUrl)
+
     await page.tracing.stop()
     const timeUsed = timer.stop()
-    const { speedIndex, perceptualSpeedIndex } = await speedline(TRACE_FILE_PATH).catch(handleSpeedLineError)
-    console.log({speedIndex, perceptualSpeedIndex})
-    const pageSpeedResult = await checkPageSpeed({ googlePageSpeedApiKey, url, viewport })
-    checkResults.push({ ...singleCheckResult, timeUsed, pageSpeedResult, speedIndex, perceptualSpeedIndex })
+
+    const { speedIndex } = await getSpeedIndexFromTraceFile()
+    const pageSpeedResult = await getGooglePageSpeedResults({ googlePageSpeedApiKey, url, viewport })
+    checkResults.push({ ...singleCheckResult, timeUsed, pageSpeedResult, speedIndex })
   }
+
   return checkResults
 }
 

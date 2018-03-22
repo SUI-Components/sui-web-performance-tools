@@ -22,7 +22,7 @@ function handleError (err) {
  * @param {string} params.url The url to extract the information of Page Speed
  * @param {Object} params.viewport Object with all the info of the viewport
  */
-async function checkPageSpeed ({ googlePageSpeedApiKey, url, viewport }) {
+async function getGooglePageSpeedResults ({ googlePageSpeedApiKey, url, viewport }) {
   const { isMobile } = viewport
   const strategy = isMobile === true ? STRATEGY_MOBILE : STRATEGY_DESKTOP
 
@@ -36,5 +36,5 @@ async function checkPageSpeed ({ googlePageSpeedApiKey, url, viewport }) {
 }
 
 module.exports = {
-  checkPageSpeed,
+  getGooglePageSpeedResults,
 }

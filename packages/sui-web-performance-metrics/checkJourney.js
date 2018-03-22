@@ -17,7 +17,7 @@ function handleErrorWithHarResponse (err) {
  * @param {Error} err
  */
 function handleErrorAction (err) {
-  console.error(err)
+  return new Error(err)
 }
 
 async function checkJourney ({client, page, journey}) {
@@ -30,14 +30,19 @@ async function checkJourney ({client, page, journey}) {
   const harResponse = await withHarResponse(page, async () => {
     for (const step of steps) {
       let timer = createTimer()
+      let result
       const [action, payload] = step
       console.log(`·· step: ${action} - ${payload}`)
 
       if (action === JOURNEY_ACTIONS.TYPE && previousStep) {
         const [, elementWhereTyping] = previousStep
-        await page[action](elementWhereTyping, payload).catch(handleErrorAction)
+        result = await page[action](elementWhereTyping, payload).catch(handleErrorAction)
       } else {
-        await page[action](payload).catch(handleErrorAction)
+        result = await page[action](payload).catch(handleErrorAction)
+      }
+
+      if (result instanceof Error) {
+        throw new Error(`Action had an error. Don't use this journey.`)
       }
 
       const timeUsed = timer.stop()
