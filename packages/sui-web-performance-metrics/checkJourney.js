@@ -3,11 +3,21 @@ const { withHarResponse } = require('./withHarResponse')
 
 const { JOURNEY_ACTIONS } = require('./types')
 
-function handleError ({ page }) {
-  return (err) => {
-    console.error('!!Error', err)
-    return {}
-  }
+/**
+ * Handle error of creating speed line from tracing
+ * @param {Error} err
+ */
+function handleErrorWithHarResponse (err) {
+  console.error(err)
+  return {}
+}
+
+/**
+ * Handle error of making an action
+ * @param {Error} err
+ */
+function handleErrorAction (err) {
+  console.error(err)
 }
 
 async function checkJourney ({client, page, journey}) {
@@ -25,9 +35,9 @@ async function checkJourney ({client, page, journey}) {
 
       if (action === JOURNEY_ACTIONS.TYPE && previousStep) {
         const [, elementWhereTyping] = previousStep
-        await page[action](elementWhereTyping, payload)
+        await page[action](elementWhereTyping, payload).catch(handleErrorAction)
       } else {
-        await page[action](payload)
+        await page[action](payload).catch(handleErrorAction)
       }
 
       const timeUsed = timer.stop()
@@ -36,7 +46,7 @@ async function checkJourney ({client, page, journey}) {
       timers.push(timeUsed)
       previousStep = step
     }
-  }).catch(handleError({ page }))
+  }).catch(handleErrorWithHarResponse)
 
   return { harResponse, timers }
 }

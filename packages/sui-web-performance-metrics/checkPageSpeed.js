@@ -5,11 +5,23 @@ const PAGE_SPEED_URL = 'https://www.googleapis.com/pagespeedonline/v4/runPagespe
 const STRATEGY_MOBILE = 'mobile'
 const STRATEGY_DESKTOP = 'desktop'
 
+/**
+ * Handle error of checking page speed
+ * @param {Object} err Error stack
+ */
 function handleError (err) {
   console.error(err)
   return EMPTY_RESPONSE
 }
 
+/**
+ * Extract the page speed information from Google API if googlePageSpeed is passed
+ * @param {Object} params
+ * @param {Object} params.page Page of Puppeeteer instance
+ * @param {string} params.googlePageSpeedApiKey API KEY for using  Google Page Speed
+ * @param {string} params.url The url to extract the information of Page Speed
+ * @param {Object} params.viewport Object with all the info of the viewport
+ */
 async function checkPageSpeed ({ googlePageSpeedApiKey, url, viewport }) {
   const { isMobile } = viewport
   const strategy = isMobile === true ? STRATEGY_MOBILE : STRATEGY_DESKTOP
