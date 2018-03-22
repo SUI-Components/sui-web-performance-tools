@@ -6,7 +6,6 @@ const { JOURNEY_ACTIONS } = require('./types')
 function handleError ({ page }) {
   return (err) => {
     console.error('!!Error', err)
-    page.screenshot()
     return {}
   }
 }
