@@ -1,7 +1,15 @@
+const speedline = require('speedline')
 const { createTimer } = require('./helpers')
 const { withHarResponse } = require('./withHarResponse')
 const { checkPageSpeed } = require('./checkPageSpeed')
 
+const TRACE_FILE_PATH = '/tmp/trace.json'
+
+/**
+ * Get native performance metrics from the browser
+ * @param {Object} params
+ * @param {Object} params.page Page of Puppeeteer instance
+ */
 async function getPerformanceMetrics ({ page }) {
   return page.evaluate(_ => {
     let paint = {}
@@ -17,6 +25,12 @@ async function getPerformanceMetrics ({ page }) {
   })
 }
 
+/**
+ * Check a single url for getting the har response
+ * @param {Object} params
+ * @param {Object} params.page Page of Puppeeteer instance
+ * @param {string} params.url Url to check
+ */
 async function checkUrl ({ page, url }) {
   const doOnPage = async () => {
     await page.goto(url)
@@ -26,20 +40,45 @@ async function checkUrl ({ page, url }) {
   return withHarResponse(page, doOnPage)
 }
 
-function handleError (err) {
-  console.log(err)
+/**
+ * Handle error of checking url
+ * @param {Object} err Error stack
+ */
+function handleErrorCheckingUrl (err) {
+  console.error(err)
+  return {}
 }
 
+/**
+ * Handle error of creating speed line from tracing
+ * @param {Object} err Error stack
+ */
+function handleSpeedLineError (err) {
+  console.error(err)
+  return { speedIndex: undefined }
+}
+
+/**
+ * Check a single url for getting the har response
+ * @param {Object} params
+ * @param {string} params.googlePageSpeedApiKey API Key for using GooglePageSpeed
+ * @param {Array<string>} params.hardLoadUrls Array of strings
+ * @param {Object} params.viewport Viewport object with all the information to emulate it
+ */
 async function checkHardLoadUrls ({ googlePageSpeedApiKey, page, hardLoadUrls, viewport }) {
   console.log('· checkHardLoadUrls')
   let checkResults = []
   for (const url of hardLoadUrls) {
     console.log(`·· checking url ${url}`)
     const timer = createTimer()
-    const singleCheckResult = await checkUrl({ page, url }).catch(handleError)
+    await page.tracing.start({path: TRACE_FILE_PATH, screenshots: true})
+    const singleCheckResult = await checkUrl({ page, url }).catch(handleErrorCheckingUrl)
+    await page.tracing.stop()
     const timeUsed = timer.stop()
+    const { speedIndex, perceptualSpeedIndex } = await speedline(TRACE_FILE_PATH).catch(handleSpeedLineError)
+    console.log({speedIndex, perceptualSpeedIndex})
     const pageSpeedResult = await checkPageSpeed({ googlePageSpeedApiKey, url, viewport })
-    checkResults.push({ ...singleCheckResult, timeUsed, pageSpeedResult })
+    checkResults.push({ ...singleCheckResult, timeUsed, pageSpeedResult, speedIndex, perceptualSpeedIndex })
   }
   return checkResults
 }
