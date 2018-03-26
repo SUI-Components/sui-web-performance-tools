@@ -20,11 +20,16 @@ function handleErrorAction (err) {
   return new Error(err)
 }
 
-async function checkJourney ({client, page, journey}) {
+async function checkJourney ({client, page, journey = {}}) {
   let timers = []
   let previousStep
 
-  const { steps } = journey
+  const { steps = [] } = journey
+  if (steps.length === 0) {
+    console.warn('No steps for the user journey defined')
+    return { harResponse: {}, timers: [] }
+  }
+
   console.log(`· checkJourney with ${steps.length} steps`)
 
   const harResponse = await withHarResponse(page, async () => {
