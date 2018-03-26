@@ -1,8 +1,8 @@
 {
-  "name": "sokutei",
+  "name": "sui-web-performance-tools",
   "private": true,
   "version": "0.0.0",
-  "description": "Extract performance metrics from your site",
+  "description": "Tools for extract performance metrics",
   "keywords": [
     "schibsted",
     "monorepo",
