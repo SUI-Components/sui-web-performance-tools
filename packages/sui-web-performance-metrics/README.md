@@ -11,7 +11,9 @@ const { getWebPerformanceMetrics, types } = require('@s-ui/web-performance-metri
 const { NETWORK_CONDITIONS, JOURNEY_ACTIONS, VIEWPORTS } = types
 
 const checkSuite = {
-  customHeaders: '',
+  extraHeaders: {
+    headerName: 'Header String Value'
+  },
   networkCondition: NETWORK_CONDITIONS.GOOD_3G,
   viewport: VIEWPORTS.MOBILE,
   hardLoadUrls: [
@@ -41,7 +43,7 @@ const { hardLoadUrls, funnelJourney: funnelJourneyResults } = await getWebPerfor
 ### Parameters
 
 checkSuite `{Object}` An object with all the information of the check that you want to perform.
-  customHeaders `{string}` Custom header to be used when navigating the page.
+  extraHeaders `{Object}` An object containing additional http headers to be sent with every request. All header values must be strings.
   networkCondition `{Object}` Object with all the info of the network condition to be used while navigating.
   viewport `{Object}` Object with all the info about the viewport of the browser to be used while navigating.
   hardLoadUrls `{Array}` Urls to check using hardload strategy.
