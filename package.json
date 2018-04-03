@@ -34,7 +34,7 @@
   },
   "config": {
     "sui-mono": {
-      "access": "private",
+      "access": "public",
       "packagesFolder": "./packages"
     },
     "validate-commit-msg": {
