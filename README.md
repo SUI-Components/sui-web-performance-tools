@@ -47,8 +47,8 @@ const { hardLoadUrls, funnelJourney: funnelJourneyResults } = await getWebPerfor
   - networkCondition `{Object}` Object with all the info of the network condition to be used while navigating.
   - viewport `{Object}` Object with all the info about the viewport of the browser to be used while navigating.
   - hardLoadUrls `{Array}` The array could be a list of urls (strings) or an object with two properties `name` and `url`.
-  - funnelJourney `{Object}`
-    -  steps `{Array}` An list of steps to perform while navigating the page.
+  - funnelJourney `{Object}`:
+    -  steps `{Array}` An list of steps to perform while navigating the page.
 
 ### Response
 
