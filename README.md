@@ -1,8 +1,8 @@
 ## sui-web-performance-metrics
 
-Library for extracing performance metrics.
+Library for extracing performance metrics of websites. Among all the metrics you can find first paint, load time, Google PageSpeed Score, number of requests, requests time, transfer size and more.
 
-This library exports a set of types in order to be used for creating the object you need pass to the method with the checks you want to perform.
+The library exports a set of types in order to be used for creating the object you need pass to the method with the checks you want to perform.
 
 ### How to use
 
@@ -40,13 +40,15 @@ const { hardLoadUrls, funnelJourney: funnelJourneyResults } = await getWebPerfor
 
 ### Parameters
 
-checkSuite `{Object}` An object with all the information of the check that you want to perform.
-  customHeaders `{string}` Custom header to be used when navigating the page.
-  networkCondition `{Object}` Object with all the info of the network condition to be used while navigating.
-  viewport `{Object}` Object with all the info about the viewport of the browser to be used while navigating.
-  hardLoadUrls `{Array}` Urls to check using hardload strategy.
-  funnelJourney `{Object}`
-    steps `{Array} An list of steps to perform while navigating the page.
+- browser `{Object}` Instance of pupeeteer connected to a Chromium instance. (optional)
+- googlePageSpeedApiKey `{string}` Valid Google Developer API Key with access to Google PageSpeed API.
+- checkSuite `{Object}` An object with all the information of the check that you want to perform:
+  - extraHeaders `{string}` Custom header to be used when navigating the page.
+  - networkCondition `{Object}` Object with all the info of the network condition to be used while navigating.
+  - viewport `{Object}` Object with all the info about the viewport of the browser to be used while navigating.
+  - hardLoadUrls `{Array}` Urls to check using hardload strategy.
+  - funnelJourney `{Object}`
+    -  steps `{Array} An list of steps to perform while navigating the page.
 
 ### Response
 
