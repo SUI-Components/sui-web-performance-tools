@@ -17,9 +17,11 @@ async function getWebPerformanceMetrics ({ browser, checkSuite, googlePageSpeedA
       throw new Error('checkSuite parameter is required')
     }
 
+    // let's people use this library without passing a browser.
+    // If you need some specific options to be passed to puppeteer, you best pass a instance created instead
     if (typeof browser === 'undefined') {
       const puppeteer = require('puppeteer')
-      browser = await puppeteer.launch()
+      browser = await puppeteer.launch({ headless: false })
     }
 
     const page = await browser.newPage()
