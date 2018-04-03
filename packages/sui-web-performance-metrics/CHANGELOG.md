@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="1.2.0"></a>
+# 1.2.0 (2018-04-03)
+
+
+### Features
+
+* update dependencies used ([16e924a](https://github.com/SUI-Components/sokutei/commit/16e924a))
+
+
+
 <a name="1.1.0"></a>
 # 1.1.0 (2018-04-03)
 
