@@ -80,7 +80,12 @@ async function checkHardLoadUrls ({ googlePageSpeedApiKey, page, hardLoadUrls, v
   console.log('· checkHardLoadUrls')
 
   let checkResults = []
-  for (const url of hardLoadUrls) {
+  for (const hardLoadUrl of hardLoadUrls) {
+    // we're supporting hardLoadUrls to be strings or object with name/url
+    const url = typeof hardLoadUrl === 'object' && typeof hardLoadUrl.url === 'string'
+      ? hardLoadUrl.url
+      : hardLoadUrl
+
     console.log(`·· checking url ${url}`)
 
     const timer = createTimer()
