@@ -1,4 +1,4 @@
-## sui-web-performance-metrics
+## sui-web-performance-metrics
 
 Library for extracing performance metrics.
 
