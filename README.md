@@ -46,9 +46,9 @@ const { hardLoadUrls, funnelJourney: funnelJourneyResults } = await getWebPerfor
   - extraHeaders `{string}` Custom header to be used when navigating the page.
   - networkCondition `{Object}` Object with all the info of the network condition to be used while navigating.
   - viewport `{Object}` Object with all the info about the viewport of the browser to be used while navigating.
-  - hardLoadUrls `{Array}` Urls to check using hardload strategy.
+  - hardLoadUrls `{Array}` The array could be a list of urls (strings) or an object with two properties `name` and `url`.
   - funnelJourney `{Object}`
-    -  steps `{Array} An list of steps to perform while navigating the page.
+    -  steps `{Array}` An list of steps to perform while navigating the page.
 
 ### Response
 
