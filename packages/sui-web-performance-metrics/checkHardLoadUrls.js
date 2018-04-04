@@ -97,7 +97,7 @@ async function checkHardLoadUrls ({ googlePageSpeedApiKey, page, hardLoadUrls, v
 
     const { speedIndex } = await getSpeedIndexFromTraceFile()
     const pageSpeedResult = await getGooglePageSpeedResults({ googlePageSpeedApiKey, url, viewport })
-    checkResults.push({ ...singleCheckResult, timeUsed, pageSpeedResult, speedIndex })
+    checkResults.push({ ...singleCheckResult, url, timeUsed, pageSpeedResult, speedIndex })
   }
 
   return checkResults
