@@ -6,9 +6,7 @@ async function withHarResponse (page, doActionsOnPage) {
   await harReader.start()
 
   const dataToAggregate = await doActionsOnPage()
-  console.log(dataToAggregate)
   const rawHar = await harReader.stop()
-  console.log(JSON.stringify(rawHar, null, 2))
 
   const harResults = pagexray.convert(rawHar)[0]
   return { ...harResults, ...dataToAggregate }
