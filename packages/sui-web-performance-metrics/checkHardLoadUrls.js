@@ -10,8 +10,8 @@ const TRACE_FILE_PATH = '/tmp/trace.json'
  * @param {Object} params
  * @param {Object} params.page Page of Puppeeteer instance
  */
-async function getSpeedIndexFromTraceFile () {
-  return speedline(TRACE_FILE_PATH, {
+async function getSpeedIndexFromTraceFile ({ traceFilePath }) {
+  return speedline(traceFilePath, {
     include: 'speedIndex'
   }).catch(handleSpeedLineError)
 }
@@ -90,12 +90,13 @@ async function checkHardLoadUrls ({ googlePageSpeedApiKey, page, hardLoadUrls, v
 
     const timer = createTimer()
     await page.tracing.start({path: TRACE_FILE_PATH, screenshots: true})
+
     const singleCheckResult = await checkUrl({ page, url }).catch(handleErrorCheckingUrl)
 
     await page.tracing.stop()
     const timeUsed = timer.stop()
 
-    const { speedIndex } = await getSpeedIndexFromTraceFile()
+    const { speedIndex } = await getSpeedIndexFromTraceFile({ traceFilePath: TRACE_FILE_PATH })
     const pageSpeedResult = await getGooglePageSpeedResults({ googlePageSpeedApiKey, url, viewport })
     checkResults.push({ ...singleCheckResult, url, timeUsed, pageSpeedResult, speedIndex })
   }
