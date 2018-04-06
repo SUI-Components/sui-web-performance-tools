@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="1.4.0"></a>
+# 1.4.0 (2018-04-06)
+
+
+### Features
+
+* use local PuppeteerHar ([b2e74c6](https://github.com/SUI-Components/sokutei/commit/b2e74c6))
+
+
+
 <a name="1.3.0"></a>
 # 1.3.0 (2018-04-04)
 
