@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="1.5.0"></a>
+# 1.5.0 (2018-04-06)
+
+
+### Bug Fixes
+
+* use specific version of puppeteer ([52fd282](https://github.com/SUI-Components/sokutei/commit/52fd282))
+
+
+
 <a name="1.4.0"></a>
 # 1.4.0 (2018-04-06)
 
