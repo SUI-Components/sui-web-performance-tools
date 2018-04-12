@@ -3,7 +3,12 @@ const { createTimer } = require('./helpers')
 const { withHarResponse } = require('./withHarResponse')
 const { getGooglePageSpeedResults } = require('./getGooglePageSpeedResults')
 
-const TRACE_FILE_PATH = '/tmp/trace.json'
+/**
+ * Create an unique trace file path for one check
+ */
+function createUniqueTraceFilePath () {
+  return `/tmp/trace${process.pid}_${Date.now()}.json`
+}
 
 /**
  * Get speedIndex from traceFile
@@ -87,16 +92,17 @@ async function checkHardLoadUrls ({ googlePageSpeedApiKey, page, hardLoadUrls, v
       : hardLoadUrl
 
     console.log(`·· checking url ${url}`)
-
+    const traceFilePath = createUniqueTraceFilePath()
     const timer = createTimer()
-    await page.tracing.start({path: TRACE_FILE_PATH, screenshots: true})
+    await page.tracing.start({path: traceFilePath, screenshots: true})
+    console.log(`··· writing traceFilePath in ${traceFilePath}`)
 
     const singleCheckResult = await checkUrl({ page, url }).catch(handleErrorCheckingUrl)
 
     await page.tracing.stop()
     const timeUsed = timer.stop()
 
-    const { speedIndex } = await getSpeedIndexFromTraceFile({ traceFilePath: TRACE_FILE_PATH })
+    const { speedIndex } = await getSpeedIndexFromTraceFile({ traceFilePath })
     const pageSpeedResult = await getGooglePageSpeedResults({ googlePageSpeedApiKey, url, viewport })
     checkResults.push({ ...singleCheckResult, url, timeUsed, pageSpeedResult, speedIndex })
   }
