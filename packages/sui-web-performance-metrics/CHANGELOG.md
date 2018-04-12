@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="1.6.0"></a>
+# 1.6.0 (2018-04-12)
+
+
+### Features
+
+* use a unique filename for tracing ([ef05d42](https://github.com/SUI-Components/sokutei/commit/ef05d42))
+
+
+
 <a name="1.5.0"></a>
 # 1.5.0 (2018-04-06)
 
@@ -49,6 +59,37 @@ All notable changes to this project will be documented in this file.
 ### Bug Fixes
 
 * fix publishing method for package ([60e35e2](https://github.com/SUI-Components/sokutei/commit/60e35e2))
+
+
+
+<a name="1.0.0"></a>
+# 1.0.0 (2018-04-03)
+
+
+### Bug Fixes
+
+* fix empty responses ([1d947e5](https://github.com/SUI-Components/sokutei/commit/1d947e5))
+* let have empty steps ([b97a5ad](https://github.com/SUI-Components/sokutei/commit/b97a5ad))
+* now, use directly the ms value ([807abd8](https://github.com/SUI-Components/sokutei/commit/807abd8))
+
+
+### Features
+
+* add googlePageSpeedKey support for using check if available ([48d2ede](https://github.com/SUI-Components/sokutei/commit/48d2ede))
+* add painting metrics ([c63f8de](https://github.com/SUI-Components/sokutei/commit/c63f8de))
+* add speedIndex calculation ([da7b015](https://github.com/SUI-Components/sokutei/commit/da7b015))
+* better error handling ([072c5d2](https://github.com/SUI-Components/sokutei/commit/072c5d2))
+* better error handling and getPageSpeedResults ([bdcf275](https://github.com/SUI-Components/sokutei/commit/bdcf275))
+* better handling error for journeys ([911d30c](https://github.com/SUI-Components/sokutei/commit/911d30c))
+* by default, deactivate headless ([9bb8ebd](https://github.com/SUI-Components/sokutei/commit/9bb8ebd))
+* change name to [@s-ui](https://github.com/s-ui)/web-performance-metrics ([98e6a84](https://github.com/SUI-Components/sokutei/commit/98e6a84))
+* change WaitFor value ([bd4f7e4](https://github.com/SUI-Components/sokutei/commit/bd4f7e4))
+* create pageSpeed metric to add ([63d139b](https://github.com/SUI-Components/sokutei/commit/63d139b))
+* let aggregate data withHAr ([2dcfe69](https://github.com/SUI-Components/sokutei/commit/2dcfe69))
+* let developers add extra http headers ([f467329](https://github.com/SUI-Components/sokutei/commit/f467329))
+* return always ms from the helper ([ec05d6d](https://github.com/SUI-Components/sokutei/commit/ec05d6d))
+* set userAgent and disable cache ([cfc429b](https://github.com/SUI-Components/sokutei/commit/cfc429b))
+* support hardLoadUrl to be object or string ([9cc9bd0](https://github.com/SUI-Components/sokutei/commit/9cc9bd0))
 
 
 
