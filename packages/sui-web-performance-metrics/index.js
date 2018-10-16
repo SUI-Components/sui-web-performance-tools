@@ -1,8 +1,9 @@
-const { emulateNetworkConditionOnClient } = require('./helpers')
-const { checkHardLoadUrls } = require('./checkHardLoadUrls')
-const { checkJourney } = require('./checkJourney')
+const {emulateNetworkConditionOnClient} = require('./helpers')
+const {checkHardLoadUrls} = require('./checkHardLoadUrls')
+const {checkJourney} = require('./checkJourney')
 
-const DEFAULT_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
+const DEFAULT_USER_AGENT =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
 
 /**
  * Get Web Performance Metrics
@@ -11,7 +12,11 @@ const DEFAULT_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) Appl
  * @param {Object} params.checkSuite Testing configuration to be peformed in order to extract metrics
  * @param {string} params.googlePageSpeedApiKey API KEY for using Google Page Speed
  */
-async function getWebPerformanceMetrics ({ browser, checkSuite, googlePageSpeedApiKey } = {}) {
+async function getWebPerformanceMetrics({
+  browser,
+  checkSuite,
+  googlePageSpeedApiKey
+} = {}) {
   try {
     if (typeof checkSuite === 'undefined') {
       throw new Error('checkSuite parameter is required')
@@ -21,14 +26,21 @@ async function getWebPerformanceMetrics ({ browser, checkSuite, googlePageSpeedA
     // If you need some specific options to be passed to puppeteer, you best pass a instance created instead
     if (typeof browser === 'undefined') {
       const puppeteer = require('puppeteer')
-      browser = await puppeteer.launch({ headless: false })
+      browser = await puppeteer.launch({headless: false})
     }
 
     const page = await browser.newPage()
     await page.setCacheEnabled(false)
-    await page.setUserAgent(DEFAULT_USER_AGENT)
     // extract the info from the check config
-    const { extraHeaders, hardLoadUrls, funnelJourney, networkCondition, viewport } = checkSuite
+    const {
+      extraHeaders,
+      hardLoadUrls,
+      funnelJourney,
+      networkCondition,
+      viewport,
+      userAgent = DEFAULT_USER_AGENT
+    } = checkSuite
+    await page.setUserAgent(userAgent)
     if (typeof extraHeaders !== 'undefined') {
       await page.setExtraHTTPHeaders(extraHeaders)
     }
@@ -36,11 +48,16 @@ async function getWebPerformanceMetrics ({ browser, checkSuite, googlePageSpeedA
     await page.setViewport(viewport)
     // create a CPD session and emulate the network as specified on the check config
     const client = await page.target().createCDPSession()
-    await emulateNetworkConditionOnClient({ client, networkCondition })
+    await emulateNetworkConditionOnClient({client, networkCondition})
     // get the result of performing all the checks
     const results = {
-      hardLoadUrls: await checkHardLoadUrls({ googlePageSpeedApiKey, page, hardLoadUrls, viewport }),
-      funnelJourney: await checkJourney({ client, page, journey: funnelJourney })
+      hardLoadUrls: await checkHardLoadUrls({
+        googlePageSpeedApiKey,
+        page,
+        hardLoadUrls,
+        viewport
+      }),
+      funnelJourney: await checkJourney({client, page, journey: funnelJourney})
     }
     // return the results
     return results

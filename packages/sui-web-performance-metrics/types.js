@@ -8,29 +8,29 @@ const JOURNEY_ACTIONS = {
 
 const NETWORK_CONDITIONS = {
   GOOD_3G: {
-    downloadThroughput: 1.5 * 1024 * 1024 / 8, // 1.5mbps
+    downloadThroughput: (1.5 * 1024 * 1024) / 8, // 1.5mbps
     ref: 'good_3g',
     latency: 40, // 40ms
-    uploadThroughput: 750 * 1024 / 8, // 750kbps
+    uploadThroughput: (750 * 1024) / 8 // 750kbps
   },
   GOOD_4G: {
-    downloadThroughput: 4 * 1024 * 1024 / 8, // 4mbps
+    downloadThroughput: (4 * 1024 * 1024) / 8, // 4mbps
     ref: 'good_4g',
     latency: 20, // 20ms
-    uploadThroughput: 3 * 1024 * 1024 / 8, // 3mbps
-  },
+    uploadThroughput: (3 * 1024 * 1024) / 8 // 3mbps
+  }
 }
 
 const VIEWPORTS = {
   DESKTOP_BIG: {
     ref: 'desktop_big',
     height: 1080,
-    width: 1920,
+    width: 1920
   },
   DESKTOP: {
     ref: 'desktop',
     height: 768,
-    width: 1366,
+    width: 1366
   },
   MOBILE: {
     hasTouch: true,
@@ -50,8 +50,8 @@ const VIEWPORTS = {
     hasTouch: true,
     height: 1024,
     ref: 'tablet',
-    width: 768,
-  },
+    width: 768
+  }
 }
 
 module.exports = {

@@ -1,12 +1,12 @@
 const speedline = require('speedline')
-const { createTimer } = require('./helpers')
-const { withHarResponse } = require('./withHarResponse')
-const { getGooglePageSpeedResults } = require('./getGooglePageSpeedResults')
+const {createTimer} = require('./helpers')
+const {withHarResponse} = require('./withHarResponse')
+const {getGooglePageSpeedResults} = require('./getGooglePageSpeedResults')
 
 /**
  * Create an unique trace file path for one check
  */
-function createUniqueTraceFilePath () {
+function createUniqueTraceFilePath() {
   return `/tmp/trace${process.pid}_${Date.now()}.json`
 }
 
@@ -15,7 +15,7 @@ function createUniqueTraceFilePath () {
  * @param {Object} params
  * @param {Object} params.page Page of Puppeeteer instance
  */
-async function getSpeedIndexFromTraceFile ({ traceFilePath }) {
+async function getSpeedIndexFromTraceFile({traceFilePath}) {
   return speedline(traceFilePath, {
     include: 'speedIndex'
   }).catch(handleSpeedLineError)
@@ -26,7 +26,7 @@ async function getSpeedIndexFromTraceFile ({ traceFilePath }) {
  * @param {Object} params
  * @param {Object} params.page Page of Puppeeteer instance
  */
-async function getPerformanceMetrics ({ page }) {
+async function getPerformanceMetrics({page}) {
   return page.evaluate(_ => {
     let paint = {}
 
@@ -34,10 +34,11 @@ async function getPerformanceMetrics ({ page }) {
       paint[entry.name] = entry.startTime
     })
 
-    const resources = window.performance.getEntriesByType('resource')
-      .map(({ duration, name }) => ({ duration, name }))
+    const resources = window.performance
+      .getEntriesByType('resource')
+      .map(({duration, name}) => ({duration, name}))
 
-    return { paint, resources }
+    return {paint, resources}
   })
 }
 
@@ -47,11 +48,11 @@ async function getPerformanceMetrics ({ page }) {
  * @param {Object} params.page Page of Puppeeteer instance
  * @param {string} params.url Url to check
  */
-async function checkUrl ({ page, url }) {
+async function checkUrl({page, url}) {
   const doOnPage = async () => {
     await page.goto(url).catch(_ => ({}))
-    const performanceMetrics = await getPerformanceMetrics({ page })
-    return { performanceMetrics }
+    const performanceMetrics = await getPerformanceMetrics({page})
+    return {performanceMetrics}
   }
   return withHarResponse(page, doOnPage)
 }
@@ -60,7 +61,7 @@ async function checkUrl ({ page, url }) {
  * Handle error of checking url
  * @param {Object} err Error stack
  */
-function handleErrorCheckingUrl (err) {
+function handleErrorCheckingUrl(err) {
   console.error(err)
   return {}
 }
@@ -69,9 +70,9 @@ function handleErrorCheckingUrl (err) {
  * Handle error of creating speed line from tracing
  * @param {Object} err Error stack
  */
-function handleSpeedLineError (err) {
+function handleSpeedLineError(err) {
   console.error(err)
-  return { speedIndex: undefined }
+  return {speedIndex: undefined}
 }
 
 /**
@@ -81,15 +82,21 @@ function handleSpeedLineError (err) {
  * @param {Array<string>} params.hardLoadUrls Array of strings
  * @param {Object} params.viewport Viewport object with all the information to emulate it
  */
-async function checkHardLoadUrls ({ googlePageSpeedApiKey, page, hardLoadUrls, viewport }) {
+async function checkHardLoadUrls({
+  googlePageSpeedApiKey,
+  page,
+  hardLoadUrls,
+  viewport
+}) {
   console.log('· checkHardLoadUrls')
 
   let checkResults = []
   for (const hardLoadUrl of hardLoadUrls) {
     // we're supporting hardLoadUrls to be strings or object with name/url
-    const url = typeof hardLoadUrl === 'object' && typeof hardLoadUrl.url === 'string'
-      ? hardLoadUrl.url
-      : hardLoadUrl
+    const url =
+      typeof hardLoadUrl === 'object' && typeof hardLoadUrl.url === 'string'
+        ? hardLoadUrl.url
+        : hardLoadUrl
 
     console.log(`·· checking url ${url}`)
     const traceFilePath = createUniqueTraceFilePath()
@@ -97,14 +104,26 @@ async function checkHardLoadUrls ({ googlePageSpeedApiKey, page, hardLoadUrls, v
     await page.tracing.start({path: traceFilePath, screenshots: true})
     console.log(`··· writing traceFilePath in ${traceFilePath}`)
 
-    const singleCheckResult = await checkUrl({ page, url }).catch(handleErrorCheckingUrl)
+    const singleCheckResult = await checkUrl({page, url}).catch(
+      handleErrorCheckingUrl
+    )
 
     await page.tracing.stop()
     const timeUsed = timer.stop()
 
-    const { speedIndex } = await getSpeedIndexFromTraceFile({ traceFilePath })
-    const pageSpeedResult = await getGooglePageSpeedResults({ googlePageSpeedApiKey, url, viewport })
-    checkResults.push({ ...singleCheckResult, url, timeUsed, pageSpeedResult, speedIndex })
+    const {speedIndex} = await getSpeedIndexFromTraceFile({traceFilePath})
+    const pageSpeedResult = await getGooglePageSpeedResults({
+      googlePageSpeedApiKey,
+      url,
+      viewport
+    })
+    checkResults.push({
+      ...singleCheckResult,
+      url,
+      timeUsed,
+      pageSpeedResult,
+      speedIndex
+    })
   }
 
   return checkResults

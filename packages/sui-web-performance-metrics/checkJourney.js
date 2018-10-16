@@ -1,13 +1,13 @@
-const { createTimer } = require('./helpers')
-const { withHarResponse } = require('./withHarResponse')
+const {createTimer} = require('./helpers')
+const {withHarResponse} = require('./withHarResponse')
 
-const { JOURNEY_ACTIONS } = require('./types')
+const {JOURNEY_ACTIONS} = require('./types')
 
 /**
  * Handle error of creating speed line from tracing
  * @param {Error} err
  */
-function handleErrorWithHarResponse (err) {
+function handleErrorWithHarResponse(err) {
   console.error(err)
   return {}
 }
@@ -16,18 +16,18 @@ function handleErrorWithHarResponse (err) {
  * Handle error of making an action
  * @param {Error} err
  */
-function handleErrorAction (err) {
+function handleErrorAction(err) {
   return new Error(err)
 }
 
-async function checkJourney ({client, page, journey = {}}) {
+async function checkJourney({client, page, journey = {}}) {
   let timers = []
   let previousStep
 
-  const { steps = [] } = journey
+  const {steps = []} = journey
   if (steps.length === 0) {
     console.warn('No steps for the user journey defined')
-    return { harResponse: {}, timers: [] }
+    return {harResponse: {}, timers: []}
   }
 
   console.log(`· checkJourney with ${steps.length} steps`)
@@ -42,7 +42,9 @@ async function checkJourney ({client, page, journey = {}}) {
 
       if (action === JOURNEY_ACTIONS.TYPE && previousStep) {
         const [, elementWhereTyping] = previousStep
-        result = await page[action](elementWhereTyping, payload).catch(handleErrorAction)
+        result = await page[action](elementWhereTyping, payload).catch(
+          handleErrorAction
+        )
       } else {
         result = await page[action](payload).catch(handleErrorAction)
       }
@@ -60,9 +62,9 @@ async function checkJourney ({client, page, journey = {}}) {
     }
   }).catch(handleErrorWithHarResponse)
 
-  return { harResponse, timers }
+  return {harResponse, timers}
 }
 
 module.exports = {
-  checkJourney,
+  checkJourney
 }

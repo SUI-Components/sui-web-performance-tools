@@ -1,4 +1,4 @@
-const { harFromMessages } = require('chrome-har')
+const {harFromMessages} = require('chrome-har')
 
 // event types to observe
 const observe = [
@@ -12,14 +12,14 @@ const observe = [
   'Network.responseReceived',
   'Network.resourceChangedPriority',
   'Network.loadingFinished',
-  'Network.loadingFailed',
+  'Network.loadingFailed'
 ]
 
 class PuppeteerHar {
   /**
    * @param {object} page
    */
-  constructor (page) {
+  constructor(page) {
     this.page = page
     this.mainFrame = this.page.mainFrame()
     this.events = []
@@ -28,13 +28,13 @@ class PuppeteerHar {
   /**
    * @return {Promise<void>}
    */
-  async start () {
+  async start() {
     this.client = await this.page.target().createCDPSession()
     await this.client.send('Page.enable')
     await this.client.send('Network.enable')
     observe.forEach(async method => {
       await this.client.on(method, params => {
-        this.events.push({ method, params })
+        this.events.push({method, params})
       })
     })
   }
@@ -42,11 +42,11 @@ class PuppeteerHar {
   /**
    * @returns {Promise<void|object>}
    */
-  async stop () {
+  async stop() {
     await this.client.detach()
     const har = harFromMessages(this.events)
     return har
   }
 }
 
-module.exports = { PuppeteerHar }
+module.exports = {PuppeteerHar}

@@ -1,7 +1,8 @@
 const axios = require('axios')
 
 const EMPTY_RESPONSE = {}
-const PAGE_SPEED_URL = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed'
+const PAGE_SPEED_URL =
+  'https://www.googleapis.com/pagespeedonline/v4/runPagespeed'
 const STRATEGY_MOBILE = 'mobile'
 const STRATEGY_DESKTOP = 'desktop'
 
@@ -9,7 +10,7 @@ const STRATEGY_DESKTOP = 'desktop'
  * Handle error of checking page speed
  * @param {Object} err Error stack
  */
-function handleError (err) {
+function handleError(err) {
   console.error(err)
   return EMPTY_RESPONSE
 }
@@ -22,19 +23,23 @@ function handleError (err) {
  * @param {string} params.url The url to extract the information of Page Speed
  * @param {Object} params.viewport Object with all the info of the viewport
  */
-async function getGooglePageSpeedResults ({ googlePageSpeedApiKey, url, viewport }) {
-  const { isMobile } = viewport
+async function getGooglePageSpeedResults({
+  googlePageSpeedApiKey,
+  url,
+  viewport
+}) {
+  const {isMobile} = viewport
   const strategy = isMobile === true ? STRATEGY_MOBILE : STRATEGY_DESKTOP
 
   if (typeof googlePageSpeedApiKey === 'undefined') {
     return EMPTY_RESPONSE
   }
 
-  const params = { url, strategy }
-  const { data } = await axios.get(PAGE_SPEED_URL, { params }).catch(handleError)
+  const params = {url, strategy}
+  const {data} = await axios.get(PAGE_SPEED_URL, {params}).catch(handleError)
   return data
 }
 
 module.exports = {
-  getGooglePageSpeedResults,
+  getGooglePageSpeedResults
 }

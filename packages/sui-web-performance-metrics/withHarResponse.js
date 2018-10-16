@@ -1,7 +1,7 @@
 const {PuppeteerHar} = require('./puppeteerHar')
 const pagexray = require('pagexray')
 
-async function withHarResponse (page, doActionsOnPage) {
+async function withHarResponse(page, doActionsOnPage) {
   const harReader = new PuppeteerHar(page)
   await harReader.start()
 
@@ -9,7 +9,7 @@ async function withHarResponse (page, doActionsOnPage) {
   const rawHar = await harReader.stop()
 
   const harResults = pagexray.convert(rawHar)[0]
-  return { ...harResults, ...dataToAggregate }
+  return {...harResults, ...dataToAggregate}
 }
 
 module.exports = {

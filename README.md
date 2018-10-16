@@ -14,6 +14,7 @@ const checkSuite = {
   customHeaders: '',
   networkCondition: NETWORK_CONDITIONS.GOOD_3G,
   viewport: VIEWPORTS.MOBILE,
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36',
   hardLoadUrls: [
     'https://google.es',
     'https://google.com',
@@ -47,6 +48,7 @@ const { hardLoadUrls, funnelJourney: funnelJourneyResults } = await getWebPerfor
   - networkCondition `{Object}` Object with all the info of the network condition to be used while navigating.
   - viewport `{Object}` Object with all the info about the viewport of the browser to be used while navigating.
   - hardLoadUrls `{Array}` The array could be a list of urls (strings) or an object with two properties `name` and `url`.
+  - userAgent `{string}` User Agent that will use the browser in order to navigate. (optional)
   - funnelJourney `{Object}`:
     -  steps `{Array}` An list of steps to perform while navigating the page.
 

@@ -14,12 +14,7 @@
     "release": "sui-mono release",
     "release:check": "sui-mono check",
     "lint": "sui-lint js && sui-lint sass",
-    "test": "NODE_ENV=test npm run test:client && NODE_ENV=test npm run test:server",
-    "test:ci": "npm run test:client -- --ci",
-    "test:client": "NODE_ENV=test sui-test browser -P 'packages/*/test/**/*Spec.js' -I 'packages/*/test/server/*Spec.js'",
-    "test:client:watch": "npm run test:client -- --watch",
-    "test:server": "NODE_ENV=test sui-test server -P './packages/*/test/!(browser)/*.js'",
-    "test:server:watch": "npm run test:server -- --watch",
+    "test": "echo true",
     "commitmsg": "validate-commit-msg",
     "precommit": "sui-precommit run"
   },
