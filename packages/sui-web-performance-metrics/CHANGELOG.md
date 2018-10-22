@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="1.7.0"></a>
+# 1.7.0 (2018-10-22)
+
+
+### Features
+
+* add userAgent parameter support and keep compatibility ([7855c35](https://github.com/SUI-Components/sokutei/commit/7855c35))
+* upgrade dependencies ([d33ee69](https://github.com/SUI-Components/sokutei/commit/d33ee69))
+
+
+
 <a name="1.6.0"></a>
 # 1.6.0 (2018-04-12)
 
