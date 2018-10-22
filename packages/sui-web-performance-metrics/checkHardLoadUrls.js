@@ -76,7 +76,7 @@ function handleSpeedLineError(err) {
 }
 
 /**
- * Check a single url for getting the har response
+ * Check list of urls for getting the har response
  * @param {Object} params
  * @param {string} params.googlePageSpeedApiKey API Key for using GooglePageSpeed
  * @param {Array<string>} params.hardLoadUrls Array of strings
@@ -93,12 +93,10 @@ async function checkHardLoadUrls({
   let checkResults = []
   for (const hardLoadUrl of hardLoadUrls) {
     // we're supporting hardLoadUrls to be strings or object with name/url
-    const url =
-      typeof hardLoadUrl === 'object' && typeof hardLoadUrl.url === 'string'
-        ? hardLoadUrl.url
-        : hardLoadUrl
+    let {name = false, url} = hardLoadUrl
+    url = url || hardLoadUrl
 
-    console.log(`·· checking url ${url}`)
+    console.log(`·· checking ${[name, url].filter(Boolean).join(' - ')}`)
     const traceFilePath = createUniqueTraceFilePath()
     const timer = createTimer()
     await page.tracing.start({path: traceFilePath, screenshots: true})
@@ -119,6 +117,7 @@ async function checkHardLoadUrls({
     })
     checkResults.push({
       ...singleCheckResult,
+      name,
       url,
       timeUsed,
       pageSpeedResult,
