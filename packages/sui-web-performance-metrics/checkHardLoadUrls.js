@@ -1,4 +1,4 @@
-const speedline = require('speedline')
+const speedline = require('speedline-core')
 const {createTimer} = require('./helpers')
 const {withHarResponse} = require('./withHarResponse')
 const {getGooglePageSpeedResults} = require('./getGooglePageSpeedResults')
