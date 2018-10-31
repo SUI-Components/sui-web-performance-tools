@@ -1,9 +1,13 @@
-const {emulateNetworkConditionOnClient} = require('./helpers')
+const {
+  emulateNetworkConditionOnClient,
+  resolveLazyNPMPackage
+} = require('./helpers')
 const {checkHardLoadUrls} = require('./checkHardLoadUrls')
 const {checkJourney} = require('./checkJourney')
 
 const DEFAULT_USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
+const PUPPETEER_VERSION = '1.9.0'
 
 /**
  * Get Web Performance Metrics
@@ -25,6 +29,7 @@ async function getWebPerformanceMetrics({
     // let's people use this library without passing a browser.
     // If you need some specific options to be passed to puppeteer, you best pass a instance created instead
     if (typeof browser === 'undefined') {
+      await resolveLazyNPMPackage(`puppeteer@${PUPPETEER_VERSION}`)
       const puppeteer = require('puppeteer')
       browser = await puppeteer.launch({headless: false})
     }

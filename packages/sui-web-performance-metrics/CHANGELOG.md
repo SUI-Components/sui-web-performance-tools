@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="1.8.0"></a>
+# 1.8.0 (2018-10-31)
+
+
+### Features
+
+* use speedline-core and get rid of CLI dependencies ([a810993](https://github.com/SUI-Components/sokutei/commit/a810993))
+* use speedline-core without cli ([c9c74f3](https://github.com/SUI-Components/sokutei/commit/c9c74f3))
+
+
+
 <a name="1.7.0"></a>
 # 1.7.0 (2018-10-22)
 
