@@ -28,6 +28,12 @@ async function getSpeedIndexFromTraceFile({traceFilePath}) {
  */
 async function getPerformanceMetrics({page}) {
   return page.evaluate(_ => {
+    const {
+      domContentLoadedEventEnd,
+      duration,
+      responseStart
+    } = window.performance.getEntriesByType('navigation')[0]
+
     let paint = {}
 
     window.performance.getEntriesByType('paint').forEach(entry => {
@@ -38,7 +44,13 @@ async function getPerformanceMetrics({page}) {
       .getEntriesByType('resource')
       .map(({duration, name}) => ({duration, name}))
 
-    return {paint, resources}
+    return {
+      paint,
+      resources,
+      DOMContentLoaded: domContentLoadedEventEnd,
+      ttfb: responseStart,
+      loadTime: duration
+    }
   })
 }
 
@@ -50,7 +62,7 @@ async function getPerformanceMetrics({page}) {
  */
 async function checkUrl({page, url}) {
   const doOnPage = async () => {
-    await page.goto(url).catch(_ => ({}))
+    await page.goto(url, {waitUntil: 'networkidle0'}).catch(_ => ({}))
     const performanceMetrics = await getPerformanceMetrics({page})
     return {performanceMetrics}
   }
@@ -109,19 +121,27 @@ async function checkHardLoadUrls({
     await page.tracing.stop()
     const timeUsed = timer.stop()
 
-    const {speedIndex} = await getSpeedIndexFromTraceFile({traceFilePath})
+    const {
+      speedIndex,
+      first: speedIndexFirst,
+      complete: speedIndexComplete
+    } = await getSpeedIndexFromTraceFile({traceFilePath})
+
     const pageSpeedResult = await getGooglePageSpeedResults({
       googlePageSpeedApiKey,
       url,
       viewport
     })
+
     checkResults.push({
       ...singleCheckResult,
       name,
       url,
       timeUsed,
       pageSpeedResult,
-      speedIndex
+      speedIndex,
+      speedIndexFirst,
+      speedIndexComplete
     })
   }
 
