@@ -34,11 +34,11 @@ async function emulateNetworkConditionOnClient({
  * @param {*} pkg Name of package to install in case of absence. ex: `my-package@8.5`
  * @return {Promise<String>} Resolve when package is installed
  */
-const resolveLazyNPMPackage = async (pkg) => {
-  const [name,] = pkg.split('@')
+const resolveLazyNPMPackage = async pkg => {
+  const [name] = pkg.split('@')
   try {
     require(name)
-  } catch {
+  } catch (e) {
     const {getSpawnPromise} = require('@s-ui/helpers/cli')
     return getSpawnPromise('npm', ['install', `${pkg}`, '--no-save'])
   }
