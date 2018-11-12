@@ -34,7 +34,7 @@ async function emulateNetworkConditionOnClient({
  * @param {*} pkg Name of package to install in case of absence. ex: `my-package@8.5`
  * @return {Promise<String>} Resolve when package is installed
  */
-const resolveLazyNPMPackage = async pkg => {
+async function resolveLazyNPMPackage(pkg) {
   const [name] = pkg.split('@')
   try {
     require(name)
