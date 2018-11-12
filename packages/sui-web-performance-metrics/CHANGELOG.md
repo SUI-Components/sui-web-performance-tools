@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="1.10.0"></a>
+# 1.10.0 (2018-11-12)
+
+
+### Bug Fixes
+
+* use async function ([d9f2bf4](https://github.com/SUI-Components/sokutei/commit/d9f2bf4))
+
+
+
 <a name="1.9.0"></a>
 # 1.9.0 (2018-11-12)
 
