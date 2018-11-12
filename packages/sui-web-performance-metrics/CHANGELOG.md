@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="1.9.0"></a>
+# 1.9.0 (2018-11-12)
+
+
+### Bug Fixes
+
+* fix catch error ([64f10fb](https://github.com/SUI-Components/sokutei/commit/64f10fb))
+
+
+
 <a name="1.8.0"></a>
 # 1.8.0 (2018-10-31)
 
